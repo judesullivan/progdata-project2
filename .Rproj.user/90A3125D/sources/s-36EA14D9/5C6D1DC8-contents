@@ -37,6 +37,7 @@ library(ggforce)
 library(readr)
 library(moments)
 library(car)
+library(ggsignif)
 ```
 
 
@@ -65,8 +66,8 @@ kable(partcoun_fre)
 
 ggplot(data = manhood_dat) +
   aes(partcoun) +
-  geom_bar(color = "purple",
-           fill = "purple") +
+  geom_bar(color = "#afd0c9",
+           fill = "#afd0c9") +
   labs(title = "Number of Participants from Each Country")
 
 # pie chart showing the percentage of participants from each country
@@ -87,16 +88,20 @@ pie(count, labels = countries, main = "Percentages of Participants from Each Cou
 # Descriptives for PMB ratings across all participants
 # Scale:  1 = strongly disagree; 7 = strongly agree
 
-preman <- honorsthesis_clean |>  
+preman <- manhood_dat |>  
   dplyr::summarize_at(vars(preman_1, preman_2, preman_3, preman_4),
                       list(mean = mean, med = median, standde = sd, min = min, max = max,
                            skew = skewness, kur = kurtosis), na.rm = TRUE)
 
 preman
 
+```
+
+
+```{r preman anova}
 # USA PMB ANOVA
 
-preman_USA <- honorsthesis_clean |>
+preman_USA <- manhood_dat |>
   filter(partcoun == "5") |> 
   dplyr::select(eth_di, sexor_di, preman) |> 
   mutate(eth_di = factor(eth_di, labels = c("White", "Non-White"))) |> 
@@ -111,9 +116,37 @@ preman_USA_anova_table <- Anova(preman_USA_anova, type = 3)
 
 preman_USA_anova_table
 
-
 ```
 
+
+```{r pmb plot}
+# USA PMB Plot
+
+preman_USA |> 
+  ggplot(aes(y = preman, x = eth_di, fill = sexor_di)) + 
+  stat_summary(geom = "bar", fun = mean, position = "dodge", width = 0.9) + 
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = position_dodge(0.9), 
+               aes(width = 0.45)) +
+  stat_summary(aes(label = round(..y.., 2)), fun = mean, geom = "text", size = 3, vjust = -4, 
+               position = position_dodge(0.9)) +
+  geom_signif(y_position = c(6, 6), xmin = c(0.8, 1.8), xmax = c(1.2, 2.2),
+              annotation = c("n.s.", "n.s."), tip_length = 0.025) +
+  geom_signif(y_position = 7, xmin = c(1), xmax = c(2), annotation = c("n.s."),
+              tip_length = 0.025) +
+  scale_x_discrete("Ethnicity") + 
+  scale_y_continuous("Precarious Manhood Rating", breaks = seq(1, 7, 1)) + 
+  scale_fill_manual("Sexual Orientation", values = c("#5b9b8d", "#afd0c9")) + 
+  coord_cartesian(ylim = c(1, 8)) + 
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = "#f9f9f9", color = "#f9f9f9"),
+        panel.background = element_rect(fill = "#f9f9f9", color = "#f9f9f9")) +
+  labs(title = "USA PMB Ratings by Race/Ethnicity and 
+                Sexual Orientation")
+  
+
+
+```
 
 # Resources
 
