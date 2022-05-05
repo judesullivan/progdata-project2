@@ -15,14 +15,14 @@ In my honors thesis, I predicted that diverse men with two non-dominant identiti
 
 ![ ](images/thesis_pmb.jpg)
 
-Interestingly, participant's country of origin did not emerge as a covariate across my analyses, so I never compared precarious manhood belief ratings between men from Australia, Canada, England, Ireland, and the United States. The present work aims to fill in this gap in my previous research. 
+Interestingly, participant's country of origin did not emerge as a covariate across my analyses, so I never compared precarious manhood belief ratings within or between men from Australia, Canada, England, Ireland, and the United States. The present work aims to fill in this gap in my previous research by investigating ratings within the United States specifically. 
 
 
 # Objectives
 
 1. Examine the frequency of responses by country
 
-2. Investigate Precarious Manhood Belief ratings across countries
+2. Investigate Precarious Manhood Belief ratings within the United States
 
 
 ## Setting Up
@@ -35,6 +35,8 @@ library(dplyr)
 library(knitr)
 library(ggforce)
 library(readr)
+library(moments)
+library(car)
 ```
 
 
@@ -82,12 +84,32 @@ pie(count, labels = countries, main = "Percentages of Participants from Each Cou
 ### Objective 2
 
 ```{r pmb}
-# Import 
+# Descriptives for PMB ratings across all participants
+# Scale:  1 = strongly disagree; 7 = strongly agree
 
-preman_de <- honorsthesis_analyzing %>% # 1 = strongly disagree; 7 = strongly agree
+preman <- honorsthesis_clean |>  
   dplyr::summarize_at(vars(preman_1, preman_2, preman_3, preman_4),
                       list(mean = mean, med = median, standde = sd, min = min, max = max,
                            skew = skewness, kur = kurtosis), na.rm = TRUE)
+
+preman
+
+# USA PMB ANOVA
+
+preman_USA <- honorsthesis_clean |>
+  filter(partcoun == "5") |> 
+  dplyr::select(eth_di, sexor_di, preman) |> 
+  mutate(eth_di = factor(eth_di, labels = c("White", "Non-White"))) |> 
+  mutate(sexor_di = factor(sexor_di, labels = c("Heterosexual", "Non-heterosexual"))) |> 
+  drop_na() |> 
+  group_by(eth_di, sexor_di)
+
+
+preman_USA_anova <- aov(preman ~ eth_di*sexor_di, data = preman_USA)
+
+preman_USA_anova_table <- Anova(preman_USA_anova, type = 3) 
+
+preman_USA_anova_table
 
 
 ```
