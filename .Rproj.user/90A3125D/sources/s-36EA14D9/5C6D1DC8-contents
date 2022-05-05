@@ -4,27 +4,68 @@ author: "Jude Sullivan"
 date: '2022-05-05'
 output: html_document
 ---
+![ ](images/toxic_masc.jpg)
+
+# Precarious Manhood
+
+The precarious manhood hypothesis reflects the universal belief that manhood is a turbulent status that is hard to gain and easy to lose, and requires constant demonstration of masculinity in social environments (Gilmore, 1990; Vandello et al., 2008). This hypothesis is informed by principles of evolutionary psychology and Eagly’s (1987) social role theory. Beliefs about the typical roles of groups correspond with stereotypes of members from these groups on the fundamental dimensions of agency and communion (Koenig & Eagly, 2014). Consequently, men of color who occupy job positions that do not fit the social role expectations of their group (e.g., an Asian man who is a landscaper instead of a doctor) may face greater backlash from their position due to a perceived deviation from norms. In relation to the precarious manhood hypothesis, these men who deviate from social expectations might exhibit higher endorsement of manhood’s precarity due to the stereotypes challenges that they face as a result of their status. Here, the Asian man might feel that his manhood status is always questioned when he is criticized for his low-status occupation rather than attending medical school and trying to be more successful in life, which would suggest a perceived lack of agency. Research regarding the precarious manhood hypothesis has tested its relationship with aggression, financial risk-taking behavior, and unemployment metaperceptions in men, indicating real-world examples of how the precarity of manhood affects the daily lives of men (Michniewicz et al., 2014; Weaver et al., 2010; Weaver et al., 2013). While efforts have been made to explore the cross-cultural significance and overall generalizability of precarious manhood, less is known about the extent to which diverse groups endorse the idea that manhood is a status that has to be proven, especially if they already deviate from prototypical figures in a country. Here, the relationship between precarious manhood ideology and the principles of intersectionality remains in uncharted waters.
+
+# Objectives
+
+1. Examine the frequency of responses by country
+
+2. Investigate Precarious Manhood Beliefs in the United States
+
+## Setting Up
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Load packages
+
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(ggforce)
+library(readr)
+library(levels)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r import, include=FALSE}
+# Import data file
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+manhood_dat <- read_csv("data/honorsthesis_clean.csv")
 
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+### Objective 1
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r frequency, include=FALSE}
+# 1 = Australia; 2 = Canada; 3 = England; 4 = Ireland; 5 = USA
+
+partcoun_fre <- manhood_dat |>  
+  group_by(partcoun) |> 
+  dplyr::summarize(n = n()) |>
+  mutate(fre = (n / sum(n) * 100) |>  round(2)) |> 
+
+kable(partcoun_fre)
+
+# bar graph showing the number of participants from each country
+
+ggplot(data = manhood_dat) +
+  aes(partcoun) +
+  geom_bar() +
+  labs(title = "USA Processed Soybean Use from 1961-2013")
+
+# pie chart showing the percentage of participants from each country
+
+frequencies <- c(24.25, 17.05, 10.21, 26.68, 21.81)
+
+count <- c(209, 147, 88, 230, 188)
+countries <- c("Australia", "Canada", "England", "Ireland", "USA")
+percent <- round(count/sum(count)*100)
+countries <- paste(countries, percent)
+countries <- paste(countries, "%", sep = "")
+pie(count, labels = countries, main = "Number of Participants from Each Country")
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
