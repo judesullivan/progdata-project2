@@ -45,7 +45,7 @@ manhood_dat <- read_csv("data/honorsthesis_clean.csv")
 partcoun_fre <- manhood_dat |>  
   group_by(partcoun) |> 
   dplyr::summarize(n = n()) |>
-  mutate(fre = (n / sum(n) * 100) |>  round(2)) |> 
+  mutate(fre = (n / sum(n) * 100) |>  round(2)) 
 
 kable(partcoun_fre)
 
@@ -57,8 +57,6 @@ ggplot(data = manhood_dat) +
   labs(title = "USA Processed Soybean Use from 1961-2013")
 
 # pie chart showing the percentage of participants from each country
-
-frequencies <- c(24.25, 17.05, 10.21, 26.68, 21.81)
 
 count <- c(209, 147, 88, 230, 188)
 countries <- c("Australia", "Canada", "England", "Ireland", "USA")

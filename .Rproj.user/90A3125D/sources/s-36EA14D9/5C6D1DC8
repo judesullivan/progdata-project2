@@ -3,9 +3,9 @@
     "path": "C:/Users/jude5/GitHub/progdata-project2/manhood_project.Rmd",
     "project_path": "manhood_project.Rmd",
     "type": "r_markdown",
-    "hash": "2694904933",
+    "hash": "0",
     "contents": "",
-    "dirty": false,
+    "dirty": true,
     "created": 1651742947091.0,
     "source_on_save": false,
     "relative_order": 1,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "27,14",
-        "scrollLine": "14"
+        "cursorPosition": "19,0",
+        "scrollLine": "12"
     },
     "folds": "",
-    "lastKnownWriteTime": 1651748383,
+    "lastKnownWriteTime": 1651748651,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1651748383282,
+    "last_content_update": 1651748695460,
     "read_only": false,
     "read_only_alternatives": []
 }
