@@ -8,13 +8,22 @@ output: html_document
 
 # Precarious Manhood
 
-The precarious manhood hypothesis reflects the universal belief that manhood is a turbulent status that is hard to gain and easy to lose, and requires constant demonstration of masculinity in social environments (Gilmore, 1990; Vandello et al., 2008). This hypothesis is informed by principles of evolutionary psychology and Eagly’s (1987) social role theory. Beliefs about the typical roles of groups correspond with stereotypes of members from these groups on the fundamental dimensions of agency and communion (Koenig & Eagly, 2014). Consequently, men of color who occupy job positions that do not fit the social role expectations of their group (e.g., an Asian man who is a landscaper instead of a doctor) may face greater backlash from their position due to a perceived deviation from norms. In relation to the precarious manhood hypothesis, these men who deviate from social expectations might exhibit higher endorsement of manhood’s precarity due to the stereotypes challenges that they face as a result of their status. Here, the Asian man might feel that his manhood status is always questioned when he is criticized for his low-status occupation rather than attending medical school and trying to be more successful in life, which would suggest a perceived lack of agency. Research regarding the precarious manhood hypothesis has tested its relationship with aggression, financial risk-taking behavior, and unemployment metaperceptions in men, indicating real-world examples of how the precarity of manhood affects the daily lives of men (Michniewicz et al., 2014; Weaver et al., 2010; Weaver et al., 2013). While efforts have been made to explore the cross-cultural significance and overall generalizability of precarious manhood, less is known about the extent to which diverse groups endorse the idea that manhood is a status that has to be proven, especially if they already deviate from prototypical figures in a country. Here, the relationship between precarious manhood ideology and the principles of intersectionality remains in uncharted waters.
+The precarious manhood hypothesis reflects the universal belief that manhood is a turbulent status that is hard to gain and easy to lose, and requires constant demonstration of masculinity in social environments (Gilmore, 1990; Vandello et al., 2008). This hypothesis is informed by principles of evolutionary psychology and Eagly’s (1987) social role theory. Beliefs about the typical roles of groups correspond with stereotypes of members from these groups on the fundamental dimensions of agency and communion (Koenig & Eagly, 2014). Consequently, men of color who occupy job positions that do not fit the social role expectations of their group (e.g., an Asian man who is a landscaper instead of a doctor) may face greater backlash from their position due to a perceived deviation from norms. In relation to the precarious manhood hypothesis, these men who deviate from social expectations might exhibit higher endorsement of manhood’s precarity due to the stereotypes challenges that they face as a result of their status. Here, the Asian man might feel that his manhood status is always questioned when he is criticized for his low-status occupation rather than attending medical school and trying to be more successful in life, which would suggest a perceived lack of agency. Research regarding the precarious manhood hypothesis has tested its relationship with aggression, financial risk-taking behavior, and unemployment metaperceptions in men, indicating real-world examples of how the precarity of manhood affects the daily lives of men (Michniewicz et al., 2014; Weaver et al., 2010; Weaver et al., 2013). While efforts have been made to explore the cross-cultural significance and overall generalizability of precarious manhood, less is known about the extent to which diverse groups endorse the idea that manhood is a status that has to be proven, especially if they already deviate from prototypical figures in a country. 
+
+In my honors thesis, I predicted that diverse men with two non-dominant identities (i.e., non-heterosexual men of color) would differ from individuals who only share one (i.e., non-heterosexual White men and heterosexual men of color) or none (i.e., heterosexual White men) of the same identities on their precarious manhood belief ratings. Per the sampled figure below, this hypothesis was not supported. Although the interaction effect was non-significant, non-White heterosexual men displayed the highest endorsement of precarious manhood beliefs (M = 4.57) while non-White non-heterosexual men displayed the lowest endorsement (M = 4.16) compared to respective White men, _F_(1, 747) = 0.80, p = 0.37. 
+
+
+![ ](images/thesis_pmb.jpg)
+
+Interestingly, participant's country of origin did not emerge as a covariate across my analyses, so I never compared precarious manhood belief ratings between men from Australia, Canada, England, Ireland, and the United States. The present work aims to fill in this gap in my previous research. 
+
 
 # Objectives
 
 1. Examine the frequency of responses by country
 
-2. Investigate Precarious Manhood Beliefs in the United States
+2. Investigate Precarious Manhood Belief ratings across countries
+
 
 ## Setting Up
 
@@ -36,6 +45,7 @@ manhood_dat <- read_csv("data/honorsthesis_clean.csv")
 
 ```
 
+
 ### Objective 1
 
 
@@ -53,8 +63,9 @@ kable(partcoun_fre)
 
 ggplot(data = manhood_dat) +
   aes(partcoun) +
-  geom_bar() +
-  labs(title = "USA Processed Soybean Use from 1961-2013")
+  geom_bar(color = "purple",
+           fill = "purple") +
+  labs(title = "Number of Participants from Each Country")
 
 # pie chart showing the percentage of participants from each country
 
@@ -63,6 +74,45 @@ countries <- c("Australia", "Canada", "England", "Ireland", "USA")
 percent <- round(count/sum(count)*100)
 countries <- paste(countries, percent)
 countries <- paste(countries, "%", sep = "")
-pie(count, labels = countries, main = "Number of Participants from Each Country")
+pie(count, labels = countries, main = "Percentages of Participants from Each Country")
 
 ```
+
+
+### Objective 2
+
+```{r pmb}
+# Import 
+
+preman_de <- honorsthesis_analyzing %>% # 1 = strongly disagree; 7 = strongly agree
+  dplyr::summarize_at(vars(preman_1, preman_2, preman_3, preman_4),
+                      list(mean = mean, med = median, standde = sd, min = min, max = max,
+                           skew = skewness, kur = kurtosis), na.rm = TRUE)
+
+
+```
+
+
+# Resources
+
+- Eagly, A. H. (1987). _Sex Differences in Social Behavior: A Social-role interpretation_ (1st ed.).
+Psychology Press. https://doi.org/10.4324/9780203781906
+
+- https://cutacut.com/2020/11/19/heres-how-toxic-masculinity-is-restrictive-for-men/
+
+- Gilmore, D. D. (1990). _Manhood in the making: Cultural concepts of masculinity._ Yale University Press.
+
+- Koenig, A. M., & Eagly, A. H. (2014). Evidence for the social role theory of stereotype content: Observations of groups’ roles shape stereotypes. _Journal of Personality and Social Psychology, 107_(3), 371–392. https://doi-org.ezproxy.lib.usf.edu/10.1037/a0037215
+
+- Michniewicz, K. S., Vandello, J. A., & Bosson, J. K. (2014). Men’s (Mis)Perceptions of the
+Gender Threatening Consequences of Unemployment. _Sex Roles, 3_(4), 88. doi: 10.1007/s11199-013-0339-3
+
+- Vandello, J. A., Bosson, J. K., Cohen, D., Burnaford, R., & Weaver, J. (2008). Precarious
+manhood. _Journal of Personality and Social Psychology, 95,_ 1325–1339. doi:10.1037/a0012453
+
+- Weaver, J. R., Vandello, J. A., & Bosson, J. K. (2013). Intrepid, imprudent, or impetuous? The
+effects of gender threats on men’s financial decisions. _Psychology of Men & Masculinity, 14_(2), 184–191. doi:10.1037/a0027087
+
+- Weaver, J. R., Vandello, J. A., Bosson, J. K., & Burnaford, R. M.(2010). The Proof is in the
+Punch: Gender Differences in Perceptions of Action and Aggression as Components of Manhood. _Sex Roles, 62_(3–4), 241–251. doi: 10.1007/s11199-009-9713-6
+
